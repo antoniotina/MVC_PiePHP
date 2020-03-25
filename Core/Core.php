@@ -21,7 +21,6 @@ class Core
         } elseif (sizeof($decomposedUrl) == 0) {
             $class = "App";
             $action = "IndexAction";
-
         } else {
             $class = $decomposedUrl[sizeof($decomposedUrl) - 2];
             $action = $decomposedUrl[sizeof($decomposedUrl) - 1] . "Action";
