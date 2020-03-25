@@ -2,16 +2,19 @@
 
 namespace Controller;
 
-class UserController
+class UserController extends \Core\Controller
 {
     public function addAction()
     {
         echo __CLASS__ . " [OK]" . PHP_EOL;
-        echo "THIS IS WORKING" . PHP_EOL;
+        echo "This is Controller\\UserController\\addAction()" . PHP_EOL;
     }
 
     public function indexAction()
     {
-        echo "this is the indexAction";
+        echo "This is Controller\\UserController\\indexAction()";
     }
 }
+
+// $testExtension = new UserController();
+// $testExtension->testMe();

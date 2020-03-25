@@ -32,6 +32,9 @@ class Core
             // Checks if the method exists, if it doesn't, displays a 404 error
             if (method_exists($classInstance, $action)) {
                 $classInstance->$action();
+            } else {
+                $action = "IndexAction";
+                $classInstance->$action();
             }
         } else {
             echo "404 - Class not found\n";
