@@ -2,6 +2,8 @@
 
 namespace Controller;
 
+use UserModel;
+
 class UserController extends \Core\Controller
 {
     public function addAction()
@@ -13,6 +15,12 @@ class UserController extends \Core\Controller
     public function indexAction()
     {
         echo "This is Controller\\UserController\\indexAction()";
+    }
+
+    public function registerAction()
+    {
+        $user = new UserModel($_POST['email'], $_POST['password']);
+        $user->saveAction();
     }
 }
 
