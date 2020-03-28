@@ -13,7 +13,7 @@ class Core
 
     public function run()
     {
-        echo __CLASS__ . " [OK]" . PHP_EOL;
+        // echo __CLASS__ . " [OK]" . PHP_EOL;
         $this->urlDecompose();
     }
 

@@ -25,6 +25,13 @@ class UserModel
         //     print_r($data);
         // }
     }
+
+    public function loginUserAction()
+    {
+        session_start();
+        $_SESSION["email"] = $_POST["email"];
+        $_SESSION["password"] = $_POST["password"];
+    }
 }
 
 // $test = new UserModel;

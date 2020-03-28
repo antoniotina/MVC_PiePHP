@@ -12,7 +12,9 @@ class AppController extends \Core\Controller
 
     public function indexAction()
     {
-        echo "This is Controller\\AppController\\indexAction()";
+        echo $this->render("index");
+        // show all users and links to register.php/login.php
+        // echo "This is Controller\\AppController\\indexAction()";
     }
 }
 
