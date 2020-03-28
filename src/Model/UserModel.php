@@ -1,38 +1,46 @@
 <?php
 
-// namespace Model;
+namespace Model;
 
-class UserModel
+class UserModel extends \Core\Database
 {
     private $email;
     private $password;
+    private $conn;
 
     public function __construct($email, $password)
     {
         $this->email = $email;
         $this->password = $password;
+        $this->conn = $this->connect();
     }
-    
+
     public function saveAction()
     {
-        $dbh = new Database();
-        $conn = $dbh->connect();
-        $insertQuery = $conn->prepare('INSERT INTO users (email, password) VALUES (:email, :password)');
+        $insertQuery = $this->conn->prepare('INSERT INTO users (email, password) VALUES (:email, :password)');
         $insertQuery->bindValue(':email', $this->email);
         $insertQuery->bindValue(':password', $this->password);
         $insertQuery->execute();
-        // while($data = $results->fetch( PDO::FETCH_ASSOC )){ 
-        //     print_r($data);
-        // }
     }
 
-    public function loginUserAction()
+    public function create()
     {
-        session_start();
-        $_SESSION["email"] = $_POST["email"];
-        $_SESSION["password"] = $_POST["password"];
+        // insert into
+    }
+
+    public function read()
+    {
+    }
+
+    public function update()
+    {
+    }
+
+    public function delete()
+    {
+    }
+
+    public function read_all()
+    {
     }
 }
-
-// $test = new UserModel;
-// $test->registerAction();

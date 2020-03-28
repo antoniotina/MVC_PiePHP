@@ -9,5 +9,3 @@ define("BASE_URI", str_replace(DIRECTORY_SEPARATOR, "/", substr(__DIR__, strlen(
 require_once(implode(DIRECTORY_SEPARATOR, ["Core", "autoload.php"]));
 $app = new Core\Core();
 $app->run();
-
-?>

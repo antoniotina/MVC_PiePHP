@@ -14,7 +14,7 @@ class UserController extends \Core\Controller
     public function addAction()
     {
         if (isset($_POST["email"]) && isset($_POST["password"])) {
-            $user = new UserModel($_POST['email'], $_POST['password']);
+            $user = new \Model\UserModel($_POST['email'], $_POST['password']);
             $user->saveAction();
         } else {
             echo $this->render("register");
@@ -24,13 +24,10 @@ class UserController extends \Core\Controller
     public function loginAction()
     {
         if (isset($_POST["email"]) && isset($_POST["password"])) {
-            $user = new UserModel($_POST['email'], $_POST['password']);
+            $user = new \Model\UserModel($_POST['email'], $_POST['password']);
             $user->saveAction();
         } else {
             echo $this->render("login");
         }
     }
 }
-
-// $testExtension = new UserController();
-// $testExtension->testMe();

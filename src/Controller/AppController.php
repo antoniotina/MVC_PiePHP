@@ -17,6 +17,3 @@ class AppController extends \Core\Controller
         // echo "This is Controller\\AppController\\indexAction()";
     }
 }
-
-// $testExtension = new AppController();
-// $testExtension->testMe();
