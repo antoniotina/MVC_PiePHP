@@ -1,5 +1,5 @@
 <div>
-    <form action="./login">
+    <form action="./user/login" method="POST">
         <label for="email">Email:</label><br>
         <input type="email" id="email" name="email"><br>
         <label for="password">Password:</label><br>
