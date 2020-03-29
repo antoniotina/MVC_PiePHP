@@ -2,52 +2,41 @@
 
 namespace Model;
 
-class UserModel extends \Core\Database
+class UserModel extends \Core\ORM
 {
     private $email;
     private $password;
     private $id;
     private $conn;
+    private $orm;
 
     public function __construct($email, $password)
     {
         $this->email = $email;
         $this->password = $password;
         $this->conn = $this->connect();
+        $this->orm = new \Core\ORM();
     }
 
     public function register()
     {
-        $orm = new \Core\ORM(); 
-        $this->id = $orm->create('users', array('email' => $this->email, 'password' => $this->password));
+        $this->id = $this->orm->create('users', array('email' => $this->email, 'password' => $this->password));
         echo $this->id;
     }
 
     public function login()
     {
-        $orm = new \Core\ORM(); 
-        $this->id = $orm->find('users', array('email' => $this->email, 'password' => $this->password));
+        $results = $this->orm->find('users', array('WHERE' => ['email' => $this->email, 'password' => $this->password], 'ANDOR' => 'AND', 'ORDER BY' => 'id ASC', 'LIMIT' => ''));
+        echo $this->orm->delete("users", 36);
+        if (isset($results[0]["id"])) {
+            $this->id = $results[0]["id"];
+        } else {
+            $this->id = 0;
+        }
         return $this->id;
-
-        // $query = $this->conn->prepare('SELECT * FROM users WHERE email = :email AND password = :password');
-        // $query->bindValue(':email', $this->email);
-        // $query->bindValue(':password', $this->password);
-        // $query->execute();
-        // return $query->fetch(\PDO::FETCH_ASSOC);
     }
 
-    public function update()
-    {
-        // update
-    }
 
-    public function delete()
-    {
-        // delete
-    }
-
-    public function read_all()
-    {
-        // select multiple
-    }
+    // TEST UPDATE
+    // echo $this->orm->update('users', 38, array( 'email' => 'nordine@gayyyy'));
 }

@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <?= $view ?>
+    <?= $view // <?= $view == <?php echo $view ?>
 </body>
 
 </html>
