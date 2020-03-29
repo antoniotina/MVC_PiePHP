@@ -2,7 +2,7 @@
 
 namespace Model;
 
-class UserModel extends \Core\ORM
+class UserModel extends \Core\Entity
 {
     private $email;
     private $password;
@@ -14,7 +14,8 @@ class UserModel extends \Core\ORM
     {
         $this->email = $email;
         $this->password = $password;
-        $this->conn = $this->connect();
+        $this->conn = new \Core\Database();
+        $this->conn = $this->conn->connect();
         $this->orm = new \Core\ORM();
     }
 
@@ -27,7 +28,6 @@ class UserModel extends \Core\ORM
     public function login()
     {
         $results = $this->orm->find('users', array('WHERE' => ['email' => $this->email, 'password' => $this->password], 'ANDOR' => 'AND', 'ORDER BY' => 'id ASC', 'LIMIT' => ''));
-        echo $this->orm->delete("users", 36);
         if (isset($results[0]["id"])) {
             $this->id = $results[0]["id"];
         } else {
@@ -36,7 +36,8 @@ class UserModel extends \Core\ORM
         return $this->id;
     }
 
-
+    // TEST DELETE
+    // echo $this->orm->delete("users", 36);
     // TEST UPDATE
     // echo $this->orm->update('users', 38, array( 'email' => 'nordine@gayyyy'));
 }
