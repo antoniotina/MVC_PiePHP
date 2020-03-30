@@ -4,12 +4,12 @@ namespace Controller;
 
 class UserController extends \Core\Controller
 {
-    private $cleanedHTTP;
+    private $request;
 
     public function __construct()
     {
-        $this->cleanedHTTP = new \Core\Request();
-        // $this->cleanedHTTP->POST;
+        $this->request = new \Core\Request();
+        // $params;
     }
 
     public function indexAction()
@@ -19,9 +19,10 @@ class UserController extends \Core\Controller
 
     public function addAction()
     {
-        if (isset($this->cleanedHTTP->POST["email"]) && isset($this->cleanedHTTP->POST["password"])) {
-            $user = new \Model\UserModel($this->cleanedHTTP->POST['email'], $this->cleanedHTTP->POST['password']);
-            echo $user->register();
+        $params = $this->request->getQueryParams();
+        if (isset($params["email"]) && isset($params["password"])) {
+            $user = new \Model\UserModel($params);
+            echo $user->create();
         } else {
             echo $this->render("register");
         }
@@ -29,8 +30,9 @@ class UserController extends \Core\Controller
 
     public function loginAction()
     {
-        if (isset($this->cleanedHTTP->POST["email"]) && isset($this->cleanedHTTP->POST["password"])) {
-            $user = new \Model\UserModel($this->cleanedHTTP->POST['email'], $this->cleanedHTTP->POST['password']);
+        $params = $this->request->getQueryParams();
+        if (isset($params["email"]) && isset($params["password"])) {
+            $user = new \Model\UserModel($params);
             if ($user->login()) {
                 echo "user is logged in";
             } else {

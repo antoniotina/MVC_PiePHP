@@ -2,13 +2,13 @@
 
 namespace Core;
 
-class ORM extends \Core\Database
+class ORM
 {
     private $conn;
 
     public function __construct()
     {
-        $this->conn = $this->connect();
+        $this->conn = \Core\Database::connect();
     }
 
     public function create($table, $fields)
@@ -36,6 +36,8 @@ class ORM extends \Core\Database
         return $this->conn->lastInsertId();
     }
 
+    // example
+    // $results = $this->orm->find('users', array('WHERE' => ['email' => $this->email, 'password' => $this->password], 'ANDOR' => 'AND', 'ORDER BY' => 'id ASC', 'LIMIT' => ''));
     public function find($table, $params = array('WHERE' => ['1' => '1'], "ANDOR" => "AND", 'ORDER BY' => 'id ASC', 'LIMIT' => ''))
     {
         $executeArray = [];
@@ -63,7 +65,7 @@ class ORM extends \Core\Database
     {
         $query = "SELECT * FROM $table WHERE id = ?";
         $req = $this->conn->prepare($query);
-        $req->execute($id);
+        $req->execute([$id]);
         return $req->fetch(\PDO::FETCH_ASSOC);
     }
 
