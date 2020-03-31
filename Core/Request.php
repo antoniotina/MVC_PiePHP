@@ -19,7 +19,6 @@ class Request
                 $params[$key] = htmlspecialchars(stripslashes(trim($value)));
             }
         }
-
         return $params;
     }
 }
