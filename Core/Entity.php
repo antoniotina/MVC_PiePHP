@@ -41,4 +41,14 @@ class Entity
         }
         return $orm->update($table, $this->id, $fields);
     }
+
+    public function delete()
+    {
+        // public function delete ($table, $id) {} // retourne un booleen
+        $orm = new \Core\ORM();
+        $table = lcfirst(preg_replace('/Model/', '', explode('\\', get_class($this))[1]) . "s");
+        return $orm->delete($table, $this->id);
+    }
+
+    
 }
