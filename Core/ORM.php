@@ -5,7 +5,7 @@ namespace Core;
 class ORM
 {
 
-    public function create($table, $fields)
+    public static function create($table, $fields)
     {
         $conn = Database::connect();
         $executeArray = [];
@@ -33,7 +33,7 @@ class ORM
 
     // example
     // $results = $this->orm->find('users', array('WHERE' => ['email' => $this->email, 'password' => $this->password], 'ANDOR' => 'AND', 'ORDER BY' => 'id ASC', 'LIMIT' => ''));
-    public function find($table, $params = array('WHERE' => ['1' => '1'], "ANDOR" => "AND", 'ORDER BY' => 'id ASC', 'LIMIT' => ''))
+    public static function find($table, $params = array('WHERE' => ['1' => '1'], "ANDOR" => "AND", 'ORDER BY' => 'id ASC', 'LIMIT' => ''))
     {
         $conn = Database::connect();
         $executeArray = [];
@@ -57,7 +57,7 @@ class ORM
         return $req->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function read($table, $id)
+    public static function read($table, $id)
     {
         $conn = Database::connect();
         $query = "SELECT * FROM $table WHERE id = ?";
@@ -66,7 +66,7 @@ class ORM
         return $req->fetch(\PDO::FETCH_ASSOC);
     }
 
-    public function update($table, $id, $fields)
+    public static function update($table, $id, $fields)
     {
         // UPDATE $table SET $field[key] - $field[value] WHERE id = $id
         $conn = Database::connect();
@@ -85,7 +85,7 @@ class ORM
         return $req->rowCount();
     }
 
-    public function delete($table, $id)
+    public static function delete($table, $id)
     {
         $conn = Database::connect();
         $query = "DELETE FROM $table WHERE id = ? ";

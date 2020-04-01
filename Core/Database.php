@@ -8,8 +8,8 @@ class Database
 
     public static function connect()
     {
-        if($this->_db == null)
-            $this->_dh = new \PDO('mysql:host=localhost;dbname=mvc_piephp', "root", "");
-        return $this->_db;
+        if(self::$_db == null)
+            self::$_db = new \PDO('mysql:host=localhost;dbname=mvc_piephp', "root", "");
+        return self::$_db;
     }
 }
