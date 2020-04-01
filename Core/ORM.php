@@ -4,15 +4,10 @@ namespace Core;
 
 class ORM
 {
-    private $conn;
-
-    public function __construct()
-    {
-        $this->conn = \Core\Database::connect();
-    }
 
     public function create($table, $fields)
     {
+        $conn = Database::connect();
         $executeArray = [];
         $query = "INSERT INTO $table (";
 
@@ -31,15 +26,16 @@ class ORM
         $query = substr($query, 0, -2);
         $query .= ")";
 
-        $req = $this->conn->prepare($query);
+        $req = $conn->prepare($query);
         $req->execute($executeArray);
-        return $this->conn->lastInsertId();
+        return $conn->lastInsertId();
     }
 
     // example
     // $results = $this->orm->find('users', array('WHERE' => ['email' => $this->email, 'password' => $this->password], 'ANDOR' => 'AND', 'ORDER BY' => 'id ASC', 'LIMIT' => ''));
     public function find($table, $params = array('WHERE' => ['1' => '1'], "ANDOR" => "AND", 'ORDER BY' => 'id ASC', 'LIMIT' => ''))
     {
+        $conn = Database::connect();
         $executeArray = [];
         $query = "SELECT * FROM $table WHERE ";
 
@@ -56,15 +52,16 @@ class ORM
             array_push($executeArray, $params["LIMIT"]);
         }
 
-        $req = $this->conn->prepare($query);
+        $req = $conn->prepare($query);
         $req->execute($executeArray);
         return $req->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public function read($table, $id)
     {
+        $conn = Database::connect();
         $query = "SELECT * FROM $table WHERE id = ?";
-        $req = $this->conn->prepare($query);
+        $req = $conn->prepare($query);
         $req->execute([$id]);
         return $req->fetch(\PDO::FETCH_ASSOC);
     }
@@ -72,6 +69,7 @@ class ORM
     public function update($table, $id, $fields)
     {
         // UPDATE $table SET $field[key] - $field[value] WHERE id = $id
+        $conn = Database::connect();
         $query = "UPDATE $table SET ";
         $executeArray = [];
         foreach ($fields as $key => $value) {
@@ -82,15 +80,16 @@ class ORM
         $query .= " WHERE id = ?";
         array_push($executeArray, $id);
 
-        $req = $this->conn->prepare($query);
+        $req = $conn->prepare($query);
         $req->execute($executeArray);
         return $req->rowCount();
     }
 
     public function delete($table, $id)
     {
+        $conn = Database::connect();
         $query = "DELETE FROM $table WHERE id = ? ";
-        $req = $this->conn->prepare($query);
+        $req = $conn->prepare($query);
         $req->execute([intval($id)]);
         return $req->rowCount();
     }

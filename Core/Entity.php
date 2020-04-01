@@ -22,16 +22,14 @@ class Entity
 
     public function create()
     {
-        $orm = new \Core\ORM();
         $dbbTable = lcfirst(preg_replace('/Model/', '', explode('\\', get_class($this))[1]) . "s");
-        $this->id = $orm->create($dbbTable, get_object_vars($this));
+        $this->id = ORM::create($dbbTable, get_object_vars($this));
         return $this->id;
     }
 
     public function update()
     {
         // public function update($table, $id, $fields)
-        $orm = new \Core\ORM();
         $table = lcfirst(preg_replace('/Model/', '', explode('\\', get_class($this))[1]) . "s");
         $fields = [];
         foreach (get_object_vars($this) as $key => $value) {
@@ -39,16 +37,13 @@ class Entity
                 $fields[$key] = $value;
             }
         }
-        return $orm->update($table, $this->id, $fields);
+        return ORM::update($table, $this->id, $fields);
     }
 
     public function delete()
     {
         // public function delete ($table, $id) {} // retourne un booleen
-        $orm = new \Core\ORM();
         $table = lcfirst(preg_replace('/Model/', '', explode('\\', get_class($this))[1]) . "s");
-        return $orm->delete($table, $this->id);
+        return ORM::delete($table, $this->id);
     }
-
-    
 }

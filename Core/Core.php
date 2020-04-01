@@ -53,8 +53,7 @@ class Core
                 if (method_exists($classInstance, $action)) {
                     $classInstance->$action();
                 } else {
-                    $action = "IndexAction";
-                    $classInstance->$action();
+                    echo "404 - Class not found\n";
                 }
             } else {
                 echo "404 - Class not found\n";

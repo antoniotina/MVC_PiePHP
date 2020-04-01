@@ -4,9 +4,12 @@ namespace Core;
 
 class Database
 {
+    private static $_db;
+
     public static function connect()
     {
-        $dbh = new \PDO('mysql:host=localhost;dbname=mvc_piephp', "root", "");
-        return $dbh;
+        if($this->_db == null)
+            $this->_dh = new \PDO('mysql:host=localhost;dbname=mvc_piephp', "root", "");
+        return $this->_db;
     }
 }
