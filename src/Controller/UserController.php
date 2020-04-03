@@ -2,6 +2,8 @@
 
 namespace Controller;
 
+use Model\UserModel;
+
 class UserController extends \Core\Controller
 {
     private $request;
@@ -15,6 +17,16 @@ class UserController extends \Core\Controller
     public function indexAction()
     {
         echo $this->render("index");
+    }
+
+    public function showAction($id = null)
+    {
+        if ($id == '?') {
+            $user = ['email' => "default@email.com", 'FirstName' => "John", 'LastName' => "Doe"];
+        } else {
+            $user = new UserModel(['id' => $id]);
+        }
+        echo $this->render("show", ["user" => $user]);
     }
 
     public function addAction()

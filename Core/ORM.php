@@ -60,9 +60,9 @@ class ORM
     public static function read($table, $id)
     {
         $conn = Database::connect();
-        $query = "SELECT * FROM ? WHERE id = ?";
+        $query = "SELECT * FROM $table WHERE id = ?";
         $req = $conn->prepare($query);
-        $req->execute([$table, $id]);
+        $req->execute([$id]);
         return $req->fetch(\PDO::FETCH_ASSOC);
     }
 

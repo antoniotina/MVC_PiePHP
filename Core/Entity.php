@@ -9,8 +9,12 @@ class Entity
         if (array_key_exists("id", $params)) {
             $orm = new \Core\ORM();
             $classData = $orm->read($this->getTableName(), $params["id"]);
-            foreach ($classData as $key => $value) {
-                $this->$key = $value;
+            if ($classData) {
+                foreach ($classData as $key => $value) {
+                    $this->$key = $value;
+                }
+            } else {
+                echo "user does not exist";
             }
         } else {
             foreach ($params as $key => $value) {

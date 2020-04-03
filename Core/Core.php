@@ -29,7 +29,7 @@ class Core
             $class = "Controller\\" . ucfirst($route["controller"]) . "Controller";
             $classInstance = new $class;
             $action = $route["action"] . "Action";
-            $classInstance->$action();
+            $classInstance->$action(Router::$id);
         } else {
             $decomposedUrl = array_values(array_filter(explode("/", $decomposedUrl[1])));
             if (sizeof($decomposedUrl) == 1) {
@@ -53,7 +53,7 @@ class Core
                 if (method_exists($classInstance, $action)) {
                     $classInstance->$action();
                 } else {
-                    echo "404 - Class not found\n";
+                    echo "404 - Method not found\n";
                 }
             } else {
                 echo "404 - Class not found\n";
