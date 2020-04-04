@@ -6,6 +6,9 @@ class Controller
 {
     public static $_render;
 
+    // Have to implement a way to read what's in the thingy to then 
+    // dynamically do different things in the render
+
     protected function render($view, $scope = [])
     {
         extract($scope);

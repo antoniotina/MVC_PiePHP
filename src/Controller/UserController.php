@@ -11,7 +11,6 @@ class UserController extends \Core\Controller
     public function __construct()
     {
         $this->request = new \Core\Request();
-        // $params;
     }
 
     public function indexAction()
