@@ -6,6 +6,8 @@ class Entity
 {
     public function __construct($params)
     {
+        // find a way to stop the infinite loop of instancing classes
+        // for each relation, apply a variable that's an object of said relation table
         if (array_key_exists("id", $params)) {
             $orm = new \Core\ORM();
             $classData = $orm->read($this->getTableName(), $params["id"]);
