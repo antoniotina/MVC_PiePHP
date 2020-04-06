@@ -4,6 +4,11 @@ namespace Model;
 
 class UserModel extends \Core\Entity
 {
+    public $relations = [
+        "has_one" => array("table" => "promo", "key" => "promo_id"),
+        "has_many" => array("table" => "articles", "key" => "article_id")
+    ];
+
     public function login()
     {
         $orm = new \Core\ORM();

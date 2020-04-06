@@ -2,5 +2,5 @@
 
 foreach($user as $key => $value)
 {
-    echo "\n $key => $value \n";
+    var_dump($key, $value);
 }

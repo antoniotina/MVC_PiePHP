@@ -21,18 +21,19 @@ class Entity
                 $this->$key = $value;
             }
         }
+        $this->getTableValuesOnly();
     }
 
     public function create()
     {
-        $this->id = ORM::create($this->getTableName(), get_object_vars($this));
+        $this->id = ORM::create($this->getTableName(), $this->getTableValuesOnly());
         return $this->id;
     }
 
     public function update()
     {
         $fields = [];
-        foreach (get_object_vars($this) as $key => $value) {
+        foreach ($this->getTableValuesOnly() as $key => $value) {
             if ($key != "id") {
                 $fields[$key] = $value;
             }
@@ -58,5 +59,15 @@ class Entity
     private function getTableName()
     {
         return lcfirst(preg_replace('/Model/', '', explode('\\', get_class($this))[1]) . "s");
+    }
+
+    // this is to remove the $relations and every object it has in relation with so that it only gives values to the actual model table
+    private function getTableValuesOnly()
+    {
+        $exclusionArray["relations"] = "off";
+        foreach ($this->relations as $key => $value) {
+            $exclusionArray[$value["table"]] = "off";
+        }
+        return array_diff_key(get_object_vars($this), $exclusionArray);
     }
 }
