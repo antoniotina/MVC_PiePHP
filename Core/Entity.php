@@ -15,6 +15,16 @@ class Entity
                 foreach ($classData as $key => $value) {
                     $this->$key = $value;
                 }
+                if(!isset($GLOBALS["counter_entity"]) || $GLOBALS["counter_entity"] < 1)
+                {
+                    $GLOBALS["counter_entity"] = 1;
+                    // HERE ADD 1 TO THE GLOBAL COUNTER
+                    // INSTANCES OF OTHER CLASSES FROM RELATIONS
+                    // 1:1 ORM::read("table in the relations variable", "ID in question") 
+                    // 1:N ORM::readAll("table in relations variable") 
+                    // N:N create a new ORM method to make a RIGHT JOIN?(i think) to be able to get all the results of the table on the right
+                    // After getting each data back, instance them with objects of their respective classes.
+                }
             } else {
                 echo "ID does not exist";
             }
