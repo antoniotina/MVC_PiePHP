@@ -16,7 +16,7 @@ class Entity
                     $this->$key = $value;
                 }
             } else {
-                echo "user does not exist";
+                echo "ID does not exist";
             }
         } else {
             foreach ($params as $key => $value) {
