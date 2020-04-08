@@ -5,7 +5,7 @@ namespace Model;
 class UserModel extends \Core\Entity
 {
     public $relations = [
-        "has_one" => array("table" => "promo", "key" => "promo_id"),
+        "has_one" => array("table" => "promos", "key" => "promo_id"),
         "has_many" => array("table" => "articles", "key" => "article_id")
     ];
 
