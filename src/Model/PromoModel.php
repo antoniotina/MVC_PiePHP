@@ -2,9 +2,9 @@
 
 namespace Model;
 
-class UserModel extends \Core\Entity
+class PromoModel extends \Core\Entity
 {
     public $relations = [
-        "has_many" => array("table" => "users", "key" => "user_id")
+        "has_many" => array("table" => "user", "key" => "user_id")
     ];
 }

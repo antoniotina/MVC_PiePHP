@@ -18,6 +18,19 @@ class Entity
                 if(!isset($GLOBALS["counter_entity"]) || $GLOBALS["counter_entity"] < 1)
                 {
                     $GLOBALS["counter_entity"] = 1;
+                    if(isset($this->relations["has_many"]))
+                    {
+                        foreach($this->relations["has_many"] as $key => $value)
+                        {
+                            $variableName = $this->getPluralName($value["table"]);
+                            $classname = $this->getClassName($value["table"]);
+                            $values = $orm->find($value["table"] . "s", array('WHERE' => [$value["key"] => $this->id], "ANDOR" => "AND", 'ORDER BY' => 'id ASC', 'LIMIT' => ''));
+                            foreach($values as $value1)
+                            {
+                                $this->$variableName[] = new $classname($value1);
+                            }
+                        }
+                    }
                     // HERE ADD 1 TO THE GLOBAL COUNTER
                     // INSTANCES OF OTHER CLASSES FROM RELATIONS
                     // 1:1 ORM::read("table in the relations variable", "ID in question") 
@@ -27,13 +40,13 @@ class Entity
                 }
             } else {
                 echo "ID does not exist";
+                return;
             }
         } else {
             foreach ($params as $key => $value) {
                 $this->$key = $value;
             }
         }
-        $this->getTableValuesOnly();
     }
 
     public function create()
@@ -78,8 +91,21 @@ class Entity
     {
         $exclusionArray["relations"] = "off";
         foreach ($this->relations as $key => $value) {
-            $exclusionArray[$value["table"]] = "off";
+            foreach($value as $key1 => $value1)
+            {
+                $exclusionArray[$value1["table"]] = "off";
+            }
         }
         return array_diff_key(get_object_vars($this), $exclusionArray);
+    }
+
+    private function getClassName($table)
+    {
+        return "\\Model\\" . ucfirst($table) . "Model";
+    }
+
+    private function getPluralName($value)
+    {
+        return $value . "s";
     }
 }
