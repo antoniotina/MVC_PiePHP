@@ -15,26 +15,31 @@ class Entity
                 foreach ($classData as $key => $value) {
                     $this->$key = $value;
                 }
-                if(!isset($GLOBALS["counter_entity"]) || $GLOBALS["counter_entity"] < 1)
-                {
+                if (!isset($GLOBALS["counter_entity"]) || $GLOBALS["counter_entity"] < 1) {
                     $GLOBALS["counter_entity"] = 1;
-                    if(isset($this->relations["has_many"]))
-                    {
-                        foreach($this->relations["has_many"] as $key => $value)
-                        {
+                    if (isset($this->relations["has_many"])) {
+                        foreach ($this->relations["has_many"] as $key => $value) {
                             $variableName = $this->getPluralName($value["table"]);
-                            $classname = $this->getClassName($value["table"]);
+                            $className = $this->getClassName($value["table"]);
                             $values = $orm->find($value["table"] . "s", array('WHERE' => [$value["key"] => $this->id], "ANDOR" => "AND", 'ORDER BY' => 'id ASC', 'LIMIT' => ''));
-                            foreach($values as $value1)
-                            {
-                                $this->$variableName[] = new $classname($value1);
+                            foreach ($values as $value1) {
+                                $this->$variableName[] = new $className($value1);
+                            }
+                        }
+                    }
+                    if (isset($this->relations["has_one"])) {
+                        foreach ($this->relations["has_one"] as $key => $value) {
+                            $variableName = $value["table"];
+                            $name = $value["key"];
+                            $className = $this->getClassName($value["table"]);
+                            $values = $orm->find($value["table"] . "s", array('WHERE' => ["id" => $this->$name], "ANDOR" => "AND", 'ORDER BY' => 'id ASC', 'LIMIT' => ''));
+                            foreach ($values as $value1) {
+                                $this->$variableName = new $className($value1);
                             }
                         }
                     }
                     // HERE ADD 1 TO THE GLOBAL COUNTER
                     // INSTANCES OF OTHER CLASSES FROM RELATIONS
-                    // 1:1 ORM::read("table in the relations variable", "ID in question") 
-                    // 1:N ORM::read("table in the relations variable", "ID in question") IN A FOREACH
                     // N:N create a new ORM method to make a RIGHT JOIN?(i think) to be able to get all the results of the table on the right
                     // After getting each data back, instance them with objects of their respective classes.
                 }
@@ -91,8 +96,7 @@ class Entity
     {
         $exclusionArray["relations"] = "off";
         foreach ($this->relations as $key => $value) {
-            foreach($value as $key1 => $value1)
-            {
+            foreach ($value as $key1 => $value1) {
                 $exclusionArray[$value1["table"]] = "off";
             }
         }
