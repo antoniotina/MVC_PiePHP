@@ -15,6 +15,7 @@ class Router
 
     public static function get($url)
     {
+        // i could do with regex \/\d+\/ for all number between two forward slashes but the point still stands
         $lastElement = explode('/', $url)[sizeof(explode('/', $url)) - 1];
         if (is_numeric($lastElement) || $lastElement == '?') {
             self::$id = $lastElement;

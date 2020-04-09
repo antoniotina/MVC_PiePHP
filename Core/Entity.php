@@ -17,16 +17,16 @@ class Entity
                 }
                 if (!isset($GLOBALS["counter_entity"]) || $GLOBALS["counter_entity"] < 1) {
                     $GLOBALS["counter_entity"] = 1;
-                    if (isset($this->relations["has_many"])) {
-                        foreach ($this->relations["has_many"] as $key => $value) {
-                            $variableName = $this->getPluralName($value["table"]);
-                            $className = $this->getClassName($value["table"]);
-                            $values = $orm->find($value["table"] . "s", array('WHERE' => [$value["key"] => $this->id], "ANDOR" => "AND", 'ORDER BY' => 'id ASC', 'LIMIT' => ''));
-                            foreach ($values as $value1) {
-                                $this->$variableName[] = new $className($value1);
-                            }
-                        }
-                    }
+if (isset($this->relations["has_many"])) {
+    foreach ($this->relations["has_many"] as $key => $value) {
+        $variableName = $this->getPluralName($value["table"]);
+        $className = $this->getClassName($value["table"]);
+        $values = $orm->find($value["table"] . "s", array('WHERE' => [$value["key"] => $this->id], "ANDOR" => "AND", 'ORDER BY' => 'id ASC', 'LIMIT' => ''));
+        foreach ($values as $value1) {
+            $this->$variableName[] = new $className($value1);
+        }
+    }
+}
                     if (isset($this->relations["has_one"])) {
                         foreach ($this->relations["has_one"] as $key => $value) {
                             $variableName = $value["table"];
