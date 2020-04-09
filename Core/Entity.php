@@ -17,34 +17,45 @@ class Entity
                 }
                 if (!isset($GLOBALS["counter_entity"]) || $GLOBALS["counter_entity"] < 1) {
                     $GLOBALS["counter_entity"] = 1;
-if (isset($this->relations["has_many"])) {
-    foreach ($this->relations["has_many"] as $key => $value) {
-        $variableName = $this->getPluralName($value["table"]);
-        $className = $this->getClassName($value["table"]);
-        $values = $orm->find($value["table"] . "s", array('WHERE' => [$value["key"] => $this->id], "ANDOR" => "AND", 'ORDER BY' => 'id ASC', 'LIMIT' => ''));
-        foreach ($values as $value1) {
-            $this->$variableName[] = new $className($value1);
-        }
-    }
-}
+                    if (isset($this->relations["has_many"])) {
+                        foreach ($this->relations["has_many"] as $key => $value) {
+                            $variableName = $this->getPluralName($value["table"]);
+                            $className = $this->getClassName($value["table"]);
+                            $values = $orm->find($value["table"] . "s", array('WHERE' => [$value["key"] => $this->id], "ANDOR" => "AND", 'ORDER BY' => 'id ASC', 'LIMIT' => ''));
+                            foreach ($values as $value1) {
+                                $this->$variableName[] = new $className($value1);
+                            }
+                        }
+                    }
                     if (isset($this->relations["has_one"])) {
                         foreach ($this->relations["has_one"] as $key => $value) {
-                            $variableName = $value["table"];
+                            $variableName = $this->getPluralName($value["table"]);
                             $name = $value["key"];
                             $className = $this->getClassName($value["table"]);
                             $values = $orm->find($value["table"] . "s", array('WHERE' => ["id" => $this->$name], "ANDOR" => "AND", 'ORDER BY' => 'id ASC', 'LIMIT' => ''));
                             foreach ($values as $value1) {
-                                $this->$variableName = new $className($value1);
+                                $this->$variableName = new $className(["id" => intval($value1["id"])]);
                             }
                         }
                     }
-                    // HERE ADD 1 TO THE GLOBAL COUNTER
-                    // INSTANCES OF OTHER CLASSES FROM RELATIONS
-                    // N:N create a new ORM method to make a RIGHT JOIN?(i think) to be able to get all the results of the table on the right
-                    // After getting each data back, instance them with objects of their respective classes.
+                    if (isset($this->relations["many_to_many"]))
+                    {
+                        foreach ($this->relations["many_to_many"] as $key => $value)
+                        {
+                            $pivotTable = $this->getTableName() . "_" . $this->getPluralName($value["table"]);
+                            $variableName = $this->getPluralName($value["table"]);
+                            $thisTable = substr($this->getTableName(), 0, -1);
+                            $className = $this->getClassName($value["table"]);
+                            $pivotResult = $orm->find($pivotTable, array('WHERE' => [$thisTable . "_id" => $this->id], "ANDOR" => "AND", 'ORDER BY' => 'id ASC', 'LIMIT' => ''));
+                            foreach($pivotResult as $key1 => $value1)
+                            {
+                                $this->$variableName[] = new $className($value1);
+                            }
+                        }
+                    }
                 }
             } else {
-                echo "ID does not exist";
+                echo "    " . $params["id"] . "     ID does not exist";
                 return;
             }
         } else {
