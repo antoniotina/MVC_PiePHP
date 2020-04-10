@@ -38,17 +38,14 @@ class Entity
                             }
                         }
                     }
-                    if (isset($this->relations["many_to_many"]))
-                    {
-                        foreach ($this->relations["many_to_many"] as $key => $value)
-                        {
+                    if (isset($this->relations["many_to_many"])) {
+                        foreach ($this->relations["many_to_many"] as $key => $value) {
                             $pivotTable = $this->getTableName() . "_" . $this->getPluralName($value["table"]);
                             $variableName = $this->getPluralName($value["table"]);
                             $thisTable = substr($this->getTableName(), 0, -1);
                             $className = $this->getClassName($value["table"]);
                             $pivotResult = $orm->find($pivotTable, array('WHERE' => [$thisTable . "_id" => $this->id], "ANDOR" => "AND", 'ORDER BY' => 'id ASC', 'LIMIT' => ''));
-                            foreach($pivotResult as $key1 => $value1)
-                            {
+                            foreach ($pivotResult as $key1 => $value1) {
                                 $this->$variableName[] = new $className($value1);
                             }
                         }
