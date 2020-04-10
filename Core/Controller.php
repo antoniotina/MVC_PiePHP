@@ -16,7 +16,7 @@ class Controller
         if (file_exists($f)) {
             ob_start();
             $templating = new \Core\TemplateEngine();
-            echo $templating->replace($f, $scope);
+            $templating->replace($f, $scope);
             $view = ob_get_clean();
             ob_start();
             include(implode(DIRECTORY_SEPARATOR, [dirname(__DIR__), 'src', 'View', 'index']) . '.php');
