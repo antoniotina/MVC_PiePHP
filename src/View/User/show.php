@@ -1,10 +1,10 @@
 {{ $user->email }}<br>
-{{ $user->id }}<br>
-{{ $user->password }}<br>
+{{ $user->id }}  {{ $user->email }}<br>
+<p>{$user->password}</p><br>
 
 
 @foreach ($user->items as $key => $item)
-<p>This has a: {$item->name}</p>
+<p>This user has a: {$item->name}</p>
 @endforeach
 
 {{ $user->email }}<br>
