@@ -31,6 +31,7 @@ class UserController extends \Core\Controller
     public function addAction()
     {
         $params = $this->request->getQueryParams();
+        var_dump($params);
         if (isset($params["email"]) && isset($params["password"])) {
             $user = new \Model\UserModel($params);
             echo $user->create();

@@ -25,6 +25,7 @@ class ORM
 
         $req = $conn->prepare($query);
         $req->execute($executeArray);
+        $req->debugDumpParams();
         return $conn->lastInsertId();
     }
 
