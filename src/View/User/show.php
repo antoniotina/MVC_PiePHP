@@ -9,3 +9,5 @@
 
 {{ $user->email }}<br>
 {{ $user->email }}<br>
+
+<a href='http://localhost/SAMSUNG/SEMESTER2/GITHUB/MVC_PiePHP/user/{$user->id}'>ICI</a>

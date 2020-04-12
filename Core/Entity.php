@@ -4,10 +4,11 @@ namespace Core;
 
 class Entity
 {
-    public function __construct($params)
+    public function __construct($params, $class = null)
     {
-        // find a way to stop the infinite loop of instancing classes
-        // for each relation, apply a variable that's an object of said relation table
+        if ($class == null) {
+            $class = get_class($this);
+        }
         if (array_key_exists("id", $params)) {
             $orm = new \Core\ORM();
             $classData = $orm->read($this->getTableName(), $params["id"]);
@@ -15,15 +16,14 @@ class Entity
                 foreach ($classData as $key => $value) {
                     $this->$key = $value;
                 }
-                if (!isset($GLOBALS["counter_entity"]) || $GLOBALS["counter_entity"] < 1) {
-                    $GLOBALS["counter_entity"] = 1;
+                if ($class == get_class($this)) {
                     if (isset($this->relations["has_many"])) {
                         foreach ($this->relations["has_many"] as $key => $value) {
                             $variableName = $this->getPluralName($value["table"]);
                             $className = $this->getClassName($value["table"]);
                             $values = $orm->find($value["table"] . "s", array('WHERE' => [$value["key"] => $this->id], "ANDOR" => "AND", 'ORDER BY' => 'id ASC', 'LIMIT' => ''));
                             foreach ($values as $value1) {
-                                $this->$variableName[] = new $className($value1);
+                                $this->$variableName[] = new $className($value1, $class);
                             }
                         }
                     }
@@ -34,7 +34,7 @@ class Entity
                             $className = $this->getClassName($value["table"]);
                             $values = $orm->find($value["table"] . "s", array('WHERE' => ["id" => $this->$name], "ANDOR" => "AND", 'ORDER BY' => 'id ASC', 'LIMIT' => ''));
                             foreach ($values as $value1) {
-                                $this->$variableName = new $className(["id" => intval($value1["id"])]);
+                                $this->$variableName = new $className(["id" => intval($value1["id"])], $class);
                             }
                         }
                     }
@@ -46,13 +46,12 @@ class Entity
                             $className = $this->getClassName($value["table"]);
                             $pivotResult = $orm->find($pivotTable, array('WHERE' => [$thisTable . "_id" => $this->id], "ANDOR" => "AND", 'ORDER BY' => 'id ASC', 'LIMIT' => ''));
                             foreach ($pivotResult as $key1 => $value1) {
-                                $this->$variableName[] = new $className($value1);
+                                $this->$variableName[] = new $className($value1, $class);
                             }
                         }
                     }
                 }
             } else {
-                echo "    " . $params["id"] . "     ID does not exist";
                 return;
             }
         } else {
